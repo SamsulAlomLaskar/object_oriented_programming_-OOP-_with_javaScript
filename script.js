@@ -216,7 +216,7 @@ Person.hey();
 // but samsul.hey() is not possible because the method is not attached to the prototype object of the Person constructor
 PersonCl.hey();
 
-//! 3rd way to implement prototypal inheritance or delegations usin Object.create()
+//! 3rd way to implement prototypal inheritance or delegations using Object.create()
 
 //* The main difference between the class constructor, Constructor Function & the the Object.create() is that in Object.create() there is no prototype or the constructor method required to set the prototype of the instance(the objected created from the Constructors)
 
