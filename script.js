@@ -121,6 +121,8 @@ class PersonCl {
     this.birthYear = birthYear;
   }
 
+  //? Instance methods - these methods will be added to the prototype which will be accessible by all the objects created using this constructor
+
   // Methods will be added to .prototype property
   calcAge() {
     console.log(2030 - this.birthYear);
@@ -139,6 +141,14 @@ class PersonCl {
   get fullName() {
     return this._fullName;
   }
+
+  //? Static method
+  // Using static method with the help of static keyword
+
+  static hey() {
+    console.log("Hey there 👋");
+    console.log("in class constructor ES6", this);
+  }
 }
 
 const jessica = new PersonCl("Jessica Davis", 1996);
@@ -148,7 +158,7 @@ jessica.calcAge();
 
 console.log(jessica.__proto__ === PersonCl.prototype);
 PersonCl.prototype.greet = function () {
-  console.log(`Hey ${this.firstName}`);
+  console.log(`Hey ${this.fullName}`);
 };
 jessica.greet();
 
@@ -191,3 +201,17 @@ console.log(account.movements);
 console.log(jessica.age);
 
 // setter & getters can be very useful for data validations
+
+//! Static Methods
+
+// Array.from();
+
+//* built in Array.from() method - from method is attached to the Array consturctor. So we could not use the from method on an array method [1,2,3].from() -> it will not work. Which means the from method is attached to the Array constructor not to the Array.prototype, therefore all the array do not inherit this method, from method is in Array name space (Number.parseFloat(32))
+
+Person.hey = function () {
+  console.log("Hey there 👋");
+  console.log("in old constructor", this);
+};
+Person.hey();
+// but samsul.hey() is not possible because the method is not attached to the prototype object of the Person constructor
+PersonCl.hey();
