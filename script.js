@@ -96,9 +96,28 @@ console.log(arr.unique());
 // const PersonCl = class {};
 
 //* class declaration
+
+/* 
 class PersonCl {
   constructor(firstName, birthYear) {
     this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  
+  // Methods will be added to .prototype property
+  calcAge() {
+    console.log(2030 - this.birthYear);
+  }
+
+  get age() {
+    return 2030 - this.birthYear;
+  }
+}
+ */
+class PersonCl {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
     this.birthYear = birthYear;
   }
 
@@ -106,9 +125,23 @@ class PersonCl {
   calcAge() {
     console.log(2030 - this.birthYear);
   }
+
+  get age() {
+    return 2030 - this.birthYear;
+  }
+
+  // Whenever we set a property that already exists
+  set fullName(name) {
+    if (name.includes(" ")) this._fullName = name;
+    else alert(`${name} is not a full name`);
+  }
+
+  get fullName() {
+    return this._fullName;
+  }
 }
 
-const jessica = new PersonCl("Jessica", 1996);
+const jessica = new PersonCl("Jessica Davis", 1996);
 
 console.log(jessica);
 jessica.calcAge();
@@ -119,6 +152,8 @@ PersonCl.prototype.greet = function () {
 };
 jessica.greet();
 
+const walter = new PersonCl("Walter White", 1995);
+
 //! Points to remember
 /* 
 * 1. Classes are not hoisted, even if they are class declarations
@@ -126,3 +161,33 @@ jessica.greet();
 ! 3. The body of a class always executed in strict mode
 
 */
+
+//! Setter & Getter methods
+
+const account = {
+  owner: "Samsul",
+  movements: [200, 235, 500, , 120, 563],
+
+  // to make a method getter we use get keyword
+  get latest() {
+    return this.movements.slice(-1).pop();
+  },
+
+  // to make a method setter we use set keyword & it must have a parameter
+
+  set latest(mov) {
+    this.movements.push(mov);
+  },
+};
+
+//* we can access the getter by just like any object key (we don't need to call that as a function/method) & the same is applicable for the setter as well
+
+account.latest = 100;
+console.log(account.latest);
+console.log(account.movements);
+
+//? Classes also do have getters & setters method & they do work in the same way
+
+console.log(jessica.age);
+
+// setter & getters can be very useful for data validations
