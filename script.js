@@ -35,7 +35,8 @@ console.log(arifa);
 
 console.log(samsul instanceof Person);
 
-//! Prototypes -- Each & every function in JS automatically has a property called prototype & that includes constructor functions, every object created by a certain constructor function will get access to all the method & properties that we define on the constructor protoype property
+//! Prototypes --
+//? Each & every function in JS automatically has a property called prototype & that includes constructor functions, every object created by a certain constructor function will get access to all the method & properties that we define on the constructor protoype property
 
 console.log(Person.prototype);
 
@@ -243,3 +244,40 @@ const sarah = Object.create(PersonProto);
 sarah.init("Sarah", 1995);
 sarah.calcAge();
 console.log(sarah);
+
+//! Inheritance between Classes Constructor Functions
+
+/* 
+?const Student = function (firstName, birthYear, course) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+  this.course = course;
+};
+ */
+
+const Student = function (firstName, birthYear, course) {
+  Person.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+//  Connecting the Student Constructor Prototype with Person Constructor Prototype
+
+Student.prototype = Object.create(Person.prototype);
+
+Student.prototype.introduce = function () {
+  console.log(`My name is ${this.firstName} and I study ${this.course}`);
+};
+
+const mike = new Student("Mike", 2020, "Computer Science");
+mike.introduce();
+mike.calcAge();
+
+console.log(mike instanceof Student);
+console.log(mike instanceof Person);
+console.log(mike instanceof Object);
+
+Student.prototype.constructor = Student;
+
+console.log(mike.__proto__);
+console.log(mike.__proto__.__proto__);
+console.dir(Student.prototype.constructor);
