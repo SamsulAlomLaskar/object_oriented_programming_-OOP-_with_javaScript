@@ -254,20 +254,22 @@ console.log(sarah);
   this.course = course;
 };
  */
+/* 
 
+*
 const Student = function (firstName, birthYear, course) {
   Person.call(this, firstName, birthYear);
   this.course = course;
 };
 
 //  Connecting the Student Constructor Prototype with Person Constructor Prototype
-
+!
 Student.prototype = Object.create(Person.prototype);
-
+*
 Student.prototype.introduce = function () {
   console.log(`My name is ${this.firstName} and I study ${this.course}`);
 };
-
+?
 const mike = new Student("Mike", 2020, "Computer Science");
 mike.introduce();
 mike.calcAge();
@@ -275,9 +277,114 @@ mike.calcAge();
 console.log(mike instanceof Student);
 console.log(mike instanceof Person);
 console.log(mike instanceof Object);
-
+*
 Student.prototype.constructor = Student;
 
 console.log(mike.__proto__);
 console.log(mike.__proto__.__proto__);
 console.dir(Student.prototype.constructor);
+ */
+
+//! Inheritance between Classes Constructor Functions Using the ES6 Feature
+
+//Connecting the StudentCl Constructor Prototype with PersonCl Constructor Prototype by using the extend & super keyword
+
+/* 
+class StudentCl extends PersonCl {
+
+  //! If we do not need any additional properties than we do not need the constructor & the super methods in the child/sub class
+  //   constructor(fullName, birthYear, course) {
+  // super(fullName, birthYear);
+  // this.course = course;
+  //   }
+}
+ */
+
+class StudentCl extends PersonCl {
+  constructor(fullName, birthYear, course) {
+    //* Super is basically the constructor function of parent class. i.e, the PersonCl class
+    //? here in the child constructor i.e the super always needs to be the first, because the super is responsible for creating the THIS keyword in this sub/child class
+    super(fullName, birthYear);
+    this.course = course;
+  }
+  introduce() {
+    console.log(`My name is ${this.fullName} and I study ${this.course}`);
+  }
+  calcAge() {
+    console.log(
+      `I'm ${
+        2030 - this.birthYear
+      } years old, but as a student i feel more like ${
+        2030 - this.birthYear + 10
+      }`
+    );
+  }
+}
+
+const martha = new StudentCl("Martha Jones", 2012, "Computer Science");
+console.log(martha);
+martha.introduce();
+martha.calcAge();
+
+//! Inheritance between Classes Constructor Functions Using the Object.create() in implementing the complex prototype chain
+
+const ikbal = Object.create(PersonProto);
+
+const StudentProto = Object.create(PersonProto);
+
+StudentProto.init = function (firstName, birthYear, course) {
+  PersonProto.init.call(this, firstName, birthYear);
+  this.course = course;
+};
+
+StudentProto.introduce = function () {
+  console.log(`My name is ${this.name} and I study ${this.course}`);
+};
+
+const jay = Object.create(StudentProto);
+jay.init("Jay", 2010, "Computer Science");
+jay.introduce();
+jay.calcAge();
+
+//
+
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    this.pin = pin;
+    this.movements = [];
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  //* This methods are called the (public interface) interface to our objects/API
+  deposit(val) {
+    this.movements.push(val);
+  }
+  withdraw(val) {
+    this.deposit(-val);
+  }
+
+  approveLoan(val) {
+    return true;
+  }
+
+  requestLoan(val) {
+    if (this.approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan Approved`);
+    }
+  }
+}
+
+const acc1 = new Account("Samsul", "INR", 1111);
+acc1.deposit(459);
+acc1.withdraw(259);
+
+// in practical this methods shouldn't be accessed by the outsiders
+acc1.requestLoan(1000);
+acc1.approveLoan(100);
+
+console.log(acc1);
