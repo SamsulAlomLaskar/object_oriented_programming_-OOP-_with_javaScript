@@ -215,3 +215,31 @@ Person.hey = function () {
 Person.hey();
 // but samsul.hey() is not possible because the method is not attached to the prototype object of the Person constructor
 PersonCl.hey();
+
+//! 3rd way to implement prototypal inheritance or delegations usin Object.create()
+
+//* The main difference between the class constructor, Constructor Function & the the Object.create() is that in Object.create() there is no prototype or the constructor method required to set the prototype of the instance(the objected created from the Constructors)
+
+const PersonProto = {
+  calcAge() {
+    console.log(2030 - this.birthYear);
+  },
+
+  init(name, birthYear) {
+    this.name = name;
+    this.birthYear = birthYear;
+  },
+};
+
+const steven = Object.create(PersonProto);
+console.log(steven);
+steven.name = "Steven";
+steven.birthYear = 2000;
+steven.calcAge();
+
+console.log(steven.__proto__);
+
+const sarah = Object.create(PersonProto);
+sarah.init("Sarah", 1995);
+sarah.calcAge();
+console.log(sarah);
