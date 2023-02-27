@@ -83,8 +83,46 @@ Array.prototype.unique = function () {
 
 console.log(arr.unique());
 
-const h1 = document.querySelector("h1");
-console.dir(
-  h1.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__
-);
+// const h1 = document.querySelector("h1");
+// console.dir(
+//   h1.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__
+// );
 // console.log(h1.__proto__.__proto__);
+
+//? ES6 classes to create prototypal inheritance
+//Classes in JS do not work like classes in other languages like Java, C++, etc, instead classes in JS are just synthethic sugar
+
+//* class Expression
+// const PersonCl = class {};
+
+//* class declaration
+class PersonCl {
+  constructor(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  }
+
+  // Methods will be added to .prototype property
+  calcAge() {
+    console.log(2030 - this.birthYear);
+  }
+}
+
+const jessica = new PersonCl("Jessica", 1996);
+
+console.log(jessica);
+jessica.calcAge();
+
+console.log(jessica.__proto__ === PersonCl.prototype);
+PersonCl.prototype.greet = function () {
+  console.log(`Hey ${this.firstName}`);
+};
+jessica.greet();
+
+//! Points to remember
+/* 
+* 1. Classes are not hoisted, even if they are class declarations
+? 2. Just like functions Classes are also first class citizens(we can pass them into a function & return them from a function {becasuse classes are a special kind of functions BTS})
+! 3. The body of a class always executed in strict mode
+
+*/
