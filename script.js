@@ -62,3 +62,29 @@ console.log(samsul.hasOwnProperty("calcAge"));
 console.log(samsul.hasOwnProperty("firstName"));
 
 console.log(Object.prototype);
+
+// Built in prototype
+console.log(samsul.__proto__.__proto__); // it will return the prototype of Object Constructor
+console.log(samsul.__proto__.__proto__.__proto__);
+
+console.dir(Person.prototype.constructor);
+
+const arr = [3, 4, 56, 7, 9, 7, 9, 3]; // new Array
+console.log("ARPR", arr.__proto__);
+console.log(arr.__proto__ === Array.prototype);
+console.log("OBJPR", arr.__proto__.__proto__);
+
+//? Custom array methods
+// Not recomended
+
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+
+console.log(arr.unique());
+
+const h1 = document.querySelector("h1");
+console.dir(
+  h1.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__.__proto__
+);
+// console.log(h1.__proto__.__proto__);
