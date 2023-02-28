@@ -358,7 +358,7 @@ jay.calcAge();
 //? 1. Public fields & 2. Private fields
 //? 3. Public methods & 4. Private methods
 //? 5. (there is also the static version)
-
+/* 
 class Account {
   //! 1. Public Field (instances)
 
@@ -411,6 +411,81 @@ class Account {
     if (this._approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan Approved`);
+    }
+  }
+
+  //! 4. Private methods -
+  //* To hide the implementation details from the outside
+  _approveLoan(val) {
+    return true;
+  }
+  //   #approveLoan(val) {
+  //     return true;
+  //   }
+
+  //! 5. Static methods - it will not available on all the instances but only on the class itself
+  static helper() {
+    console.log("Helper");
+  }
+}
+ */
+
+class Account {
+  //! 1. Public Field (instances)
+
+  //* field is an property of all the instances, so we can call it public instance field
+
+  //? We need to give a semi-colon (;) at the end of the field after declaring & we don't need to declare it with any let or const
+
+  //* Note that the fields are not the part of the prototype,they are in the instances but the methods are part of the prototype
+  locale = navigator.language;
+  //   _movements = [];
+
+  //! Private fields (instances) - this will be accessible in the instances but not in the prototype
+
+  //* properties are not truly not accessible from outside
+  #movements = [];
+  #pin;
+
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+
+    // since it is not truly private we call it as Protected property (we are not allowed to touch this outside the class, if reqd we can create a method with name starting with get)
+
+    //? Protected property
+
+    this.#pin = pin;
+    // this._movements = [];
+    // this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  //! 3. Public methods
+  // Public interface
+  getMovements() {
+    return this.#movements;
+  }
+
+  //* This methods are called the (public interface) interface to our objects/API
+
+  //! Implementing the method chaining
+  deposit(val) {
+    this.#movements.push(val);
+    return this; //! Implementing the method chaining
+  }
+  withdraw(val) {
+    this.deposit(-val);
+    return this; //! Implementing the method chaining
+  }
+
+  requestLoan(val) {
+    // if (this.#approveLoan(val)) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan Approved`);
+      return this; //! Implementing the method chaining
     }
   }
 
@@ -490,3 +565,11 @@ console.log(acc1);
 // console.log(acc1.#movements); //? Uncaught SyntaxError: Private field '#movements' must be declared in an enclosing class
 // console.log(acc1.#pin);
 Account.helper();
+
+//? Chaining methods
+
+acc1.deposit(200).deposit(400).withdraw(32).requestLoan(1200).withdraw(230);
+
+console.log(acc1.getMovements());
+
+//! ES6 classes summary
