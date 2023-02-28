@@ -346,45 +346,147 @@ jay.init("Jay", 2010, "Computer Science");
 jay.introduce();
 jay.calcAge();
 
-//
+//! Encapsulation - to keep properties & the methods private inside the class so that they're not accessible from the outside of the class, (then the rest of the methods are exposed to the public interface which we also call API) --- Why encapsulation & data privacy?
+//* 1. To prevent code from outside of the class to accidently manipulate data inside the class
+
+//* 2. When we expose only a small interface so a small API consisting of only few public methods, then we can change only other internal methods with more confidence, because in this case we can be sure that the external code doesn't rely on these private methods, therefore our code will not break when we do our internal changes
+
+//? However the JS classes actually do not yet support real data privacy & encapsulation
+
+//! Encapsulation & Private class fields
+
+//? 1. Public fields & 2. Private fields
+//? 3. Public methods & 4. Private methods
+//? 5. (there is also the static version)
 
 class Account {
+  //! 1. Public Field (instances)
+
+  //* field is an property of all the instances, so we can call it public instance field
+
+  //? We need to give a semi-colon (;) at the end of the field after declaring & we don't need to declare it with any let or const
+
+  //* Note that the fields are not the part of the prototype,they are in the instances but the methods are part of the prototype
+  locale = navigator.language;
+  //   _movements = [];
+
+  //! Private fields (instances) - this will be accessible in the instances but not in the prototype
+
+  //* properties are not truly not accessible from outside
+  #movements = [];
+  #pin;
+
   constructor(owner, currency, pin) {
     this.owner = owner;
     this.currency = currency;
-    this.pin = pin;
-    this.movements = [];
-    this.locale = navigator.language;
+
+    // since it is not truly private we call it as Protected property (we are not allowed to touch this outside the class, if reqd we can create a method with name starting with get)
+
+    //? Protected property
+
+    this.#pin = pin;
+    // this._movements = [];
+    // this.locale = navigator.language;
 
     console.log(`Thanks for opening an account, ${owner}`);
   }
 
+  //! 3. Public methods
+  // Public interface
+  getMovements() {
+    return this.#movements;
+  }
+
   //* This methods are called the (public interface) interface to our objects/API
+
   deposit(val) {
-    this.movements.push(val);
+    return this.#movements.push(val);
   }
   withdraw(val) {
     this.deposit(-val);
   }
 
-  approveLoan(val) {
+  requestLoan(val) {
+    // if (this.#approveLoan(val)) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan Approved`);
+    }
+  }
+
+  //! 4. Private methods -
+  //* To hide the implementation details from the outside
+  _approveLoan(val) {
+    return true;
+  }
+  //   #approveLoan(val) {
+  //     return true;
+  //   }
+
+  //! 5. Static methods - it will not available on all the instances but only on the class itself
+  static helper() {
+    console.log("Helper");
+  }
+}
+/* 
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+
+    // since it is not truly private we call it as Protected property (we are not allowed to touch this outside the class, if reqd we can create a method with name starting with get)
+
+    //? Protected property
+
+    this._pin = pin;
+    this._movements = [];
+    this.locale = navigator.language;
+
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  // Public interface
+  getMovements() {
+    return this._movements;
+  }
+
+  //* This methods are called the (public interface) interface to our objects/API
+
+  deposit(val) {
+    return this._movements.push(val);
+  }
+  withdraw(val) {
+    this.deposit(-val);
+  }
+
+  _approveLoan(val) {
     return true;
   }
 
   requestLoan(val) {
-    if (this.approveLoan(val)) {
+    if (this._approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan Approved`);
     }
   }
 }
+ */
 
 const acc1 = new Account("Samsul", "INR", 1111);
 acc1.deposit(459);
 acc1.withdraw(259);
+// acc1._movements.push(330);
+console.log("HHH", acc1.getMovements());
 
 // in practical this methods shouldn't be accessed by the outsiders
 acc1.requestLoan(1000);
-acc1.approveLoan(100);
+// console.log("Approve Loan", acc1.#approveLoan(100));
 
 console.log(acc1);
+
+//? Truly private class fields & methods
+//! Why it is called fields? - in traditional languages like java, c++ properties are usually called fields
+
+// console.log(acc1.#movements); //? Uncaught SyntaxError: Private field '#movements' must be declared in an enclosing class
+// console.log(acc1.#pin);
+Account.helper();
